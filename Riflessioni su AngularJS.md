@@ -10,18 +10,18 @@ Navigando nel codice della LPPM dashboard avrete notato che in un paio di punti 
 });
 ```
 e alcuni di voi diranno: ma come? Non era una cosa da non fare _mai_? Io vi cito Fabrizio de André:
-> non spalancare le labbra ad un ingorgo di parole \
-> le tue labbra così, frenate nelle fantasie dell'amore \
-> dopo l'amore così, sicure a rifugiarsi nei "sempre", \
+> non spalancare le labbra ad un ingorgo di parole  
+> le tue labbra così, frenate nelle fantasie dell'amore  
+> dopo l'amore così, sicure a rifugiarsi nei "sempre",  
 > nell'ipocrisia dei "mai" 
 
 Mi sono senza dubbio opposto a questa abitudine, frenandola in modo molto deciso. Il motivo è che, per esperienza, gli eventi, ad occhio inesperto, sembrano _comodi_ e _veloci_ ma troppo spesso li ho visti degenerare diventando uno **strumento automatico di generazione di bordello**.
 
 Questo non significa che il modello publisher/subscriber sia _sbagliato_ di per sè, nè ho nulla contro questo, volevo solo che venisse usato, come ogni strumento, nel modo giusto.
-> A volte ho avvitato viti con la punta di un coltello, perchè non avevo un cacciavite \
-> Questo non significa che il coltello sia un cacciavite. \
-> Nè che, in presenza di un cacciavite, userei un coltello.\
-> Nè che taglierei la bistecca con un cacciavite.\
+> A volte ho avvitato viti con la punta di un coltello, perchè non avevo un cacciavite  
+> Questo non significa che il coltello sia un cacciavite.  
+> Nè che, in presenza di un cacciavite, userei un coltello.  
+> Nè che taglierei la bistecca con un cacciavite.  
 > Nè che io abbia nulla contro i coltelli o i cacciaviti.
 
 ## 2. Angular best practices
@@ -49,8 +49,8 @@ Però di `$rootScope` si possono usare i `$watch*` e, perchè no, il `$broadcast`,
 [^martello]: Questa è una di quelle cose per cui davvero userei il martello.
 
 ## 4. Controllers e `$scope`
-Anche se Javascript non è _tecnicamente_ un linguaggio orientato agli oggetti, mi piace pensare di poter miscelare concetti di OOP per quel che riguarda l'architettura e concetti di funzionale per la parte più algoritmica. Alla fine AngularJS è un framework e come tale punta sull'architettura, con delle cose più zuccherose qui e là. \
-Non solo, Angular2 e ECMA6 hanno il concetto di classi. Sone sempre classi ad ereditarietà prototipale, quindi un concetto diverso da quello a cui siamo abituati con altri linguaggi OO, come Java o C#.\
+Anche se Javascript non è _tecnicamente_ un linguaggio orientato agli oggetti, mi piace pensare di poter miscelare concetti di OOP per quel che riguarda l'architettura e concetti di funzionale per la parte più algoritmica. Alla fine AngularJS è un framework e come tale punta sull'architettura, con delle cose più zuccherose qui e là.  
+Non solo, Angular2 e ECMA6 hanno il concetto di classi. Sone sempre classi ad ereditarietà prototipale, quindi un concetto diverso da quello a cui siamo abituati con altri linguaggi OO, come Java o C#.
 Questi sono comunque i motivi per cui mi piace l'idea di avere dei controller senza `$scope` iniettato, ma che usino la sintassi `this` e `controllerAs`. Non so se è più chiara, forse no, forse è anche più complessa, ma mi evita una cosa: confondere lo `$scope` con un posto in cui versare mille variabili e funzioni. Vorrei continuare a vederlo solo come il modo di comunicare con il framework.
 
 Non solo, il controller è in sostanza solo una API con la UI (HTML) e deve fornire ad essa i dati e il modo per interagire con questi dati da parte dell'utente. Per il resto ci sono i servizi e, ancor più importante, le directives.

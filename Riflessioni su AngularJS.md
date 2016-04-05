@@ -28,7 +28,7 @@ Questo non significa che il modello publisher/subscriber sia _sbagliato_ di per 
 A parte il mio essere [manicheo] [manicheismo], c'è anche una questione di _best practices_.  
 * La comunicazione tra controllers avviene attraverso i servizi (documentatissimo). Usare solo gli eventi vuol dire fare un bordello.
 * Spesso non ho bisogno di un evento, ma è molto più espressivo, comprensibile, leggibile e **tracciabile** dire ad un servizio di fare qualcosa e lui lo fa ed eventualmente segnala (altri, a mia insaputa).
-* In generale, C( buona pratica _non iniettare_ `$scope` _nei controllers_. Per esperienza, se serve lo scope, serve una directive (e le sue `link` functions).
+* In generale, è buona pratica _non iniettare_ `$scope` _nei controllers_. Per esperienza, se serve lo scope, serve una directive (e le sue `link` functions).
 * Non per nulla, i servizi (e le factory) non possono avere iniettato uno `$scope`, ma solo `$rootScope`
 * I controllers non sono altro che un'API per la UI per avere i dati. La logica per ottenere questi dati non va necessariamente (e sarebbe in effetti meglio evitare di metterla) nei controllers (anche se viene spesso piC9 comodo, lo so)
 * `$emit` e `$broadcast` vanno capiti bene. Uno va in su, uno in giC9. Ma su e giC9 di cosa? E qui si apre un _vaso di Pandora_: l'ereditarietà  prototipale degli `$scope` vs lo `$scope.$parent` (no, non sono necessariamente la stessa cosa).

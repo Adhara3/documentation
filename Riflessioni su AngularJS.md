@@ -93,6 +93,7 @@ Vista così, a cosa serve iniettare lo `$scope` nel controller?
 E non è solo questo:
 * Succede lo stesso con UI router
 * Succede lo stesso con `$uibModal`
+* due indizi fanno... quasi una prova.
 
 
 ---

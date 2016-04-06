@@ -5,7 +5,7 @@
 Navigando nel codice della LPPM dashboard avrete notato che in un paio di punti appare una cosa di questo tipo:
 ```javascript
 .service('Dataview', function($rootScope){
-    /...
+    //...
     $rootScope.$broadcast('dataview.updated');
 });
 ```
@@ -96,11 +96,44 @@ E non h solo questo:
 * due indizi fanno... quasi una prova.
 
 ## 6. Ma quindi... sti eventi?
-Premesso tutto questo, gli eventi che girano negli `$scope` sono una feature utilizzabile, visto soprattutto un grandissimo vantaggio: le sottoscrizioni _muoiono con lo `$scope` stesso_. Quindi non serve deregistrarsi. Ripeto però che secondo me servono due requisiti:
+Premesso tutto questo, gli eventi che girano negli `$scope` sono una _feature_ utilizzabile, visto soprattutto un grandissimo vantaggio: le sottoscrizioni _muoiono con lo `$scope` stesso_. Quindi non serve deregistrarsi. Ripeto però che secondo me servono due requisiti:
 * Si usa solo il `$broadcast`, ovvero vengono solo tirati dall'alto
-* Non se ne abusa, meglio una chiamata esplicita.
-* 
-Vediamo un esempio.  
+* Non se ne abusa, meglio una chiamata esplicita ed un API chiara.
+
+Vediamo un esempio tratto da una storia vera: la dashboard.
+Attori:
+* **Dataset**: Dataset è il _set completo dei dati_ (che arrivano dal server). E' un `service`
+* **Dataview**: è una view sul dataset, ovvero è il dataset al netto dei filtri. Dataview è l'unico che conosce il Dataset e la sua esistenza. Il resto del mondo conosce solo Dataview. E' un `service` che espone di fatto solo `flush()` che prende il dataset, lo fa filtrare dai filtri e mette a disposizione il risultato.
+* **Sidebar**: il controller a sinistra. Di fatto mostra i filtri, scatena l'edit (che è responsabilità dei filtri stessi) e chiede al Dataview di far `flush()`
+Quando cambio un filtro nella sidebar, la sidebar(controller) dice al Dataview (servizio) di fare `flush()`
+* **Main** il controller di destra. Chiede ai filtri di dar la descrizione dei filtri attivi (i tag in alto), si occupa di mostrare le diverse _view_ (i report). Prende dal Dataview i dati quando disponibili e li _inoltra_ alle view sotto. Non fa praticmente nulla.
+
+Il problema è come far comunicare `sidebar` e `main`. La soluzione più semplice è: renderli un solo controller. Non vi è nulla di male a farlo così tranne che ha molte dipendenze iniettate, che anche a livello di DOM è molto "ingombrante" e che fa cose molto diverse dal setup dei filtri, alla gestione dei repot. Però nessun problema sulla comunicazione. Perché non l'ho fatto così?
+
+Perché guardando la pagina quelle due parti, sinistra e centro, sono due directive. O se volete due view dello stesso `$state`, come il menu, i dettagli e il QPL di LPPM. C'è anche una questione di ordine, non voglio controller giganti e di curiosità: come farli parlare diventa una sfida.  
+Quindi l'ho impostato così, non ho fatto le views dello `$state` nè due directive, ma stanno in un solo HTML con due controller dichiarati nell'HTML stesso. Passare alle directives o alla route e le view è banale da questo punto di partenza.
+
+Ok, come segnalare che i filtri sono cambiati?  
+Soluzione 1: eventi puri
+```javascript
+.service('Dataview', function($rootScope){
+    //...
+    $rootScope.$on('filters.changed', function(){
+        // Refresh dataview data
+        $rootScope.$broadcast('dataview.updated');
+    });
+})
+.controller('Sidebar', function($scope){
+    //...
+    $scope.$emit('filters.changed');
+})
+.controller('Main', function($scope){
+    //...
+    $rootScope.$on('dataview.updated', function(){
+        // refresh the local dataview that is shared with the below reports
+    });
+})
+```
 
 ---
 **Thanks to [Dillinger.io] [dill] for providing the sotware to easily write this document**

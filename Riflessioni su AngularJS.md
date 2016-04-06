@@ -27,11 +27,11 @@ Questo non significa che il modello publisher/subscriber sia _sbagliato_ di per 
 ## 2. Angular best practices
 A parte il mio essere [manicheo] [manicheismo], c'è anche una questione di _best practices_.  
 * La comunicazione tra controllers avviene attraverso i servizi (documentatissimo). Usare solo gli eventi vuol dire fare un bordello.
-* Spesso non ho bisogno di un evento, ma è molto piy espressivo, comprensibile, leggibile e **tracciabile** dire ad un servizio di fare qualcosa e lui lo fa ed eventualmente segnala (altri, a mia insaputa).
+* Spesso non ho bisogno di un evento, ma è molto più espressivo, comprensibile, leggibile e **tracciabile** dire ad un servizio di fare qualcosa e lui lo fa ed eventualmente segnala (altri, a mia insaputa).
 * In generale, è buona pratica _non iniettare_ `$scope` _nei controllers_. Per esperienza, se serve lo scope, serve una directive (e le sue `link` functions).
 * Non per nulla, i servizi (e le factory) non possono avere iniettato uno `$scope`, ma solo `$rootScope`
 * I controllers non sono altro che un'API per la UI per avere i dati. La logica per ottenere questi dati non va necessariamente (e sarebbe in effetti meglio evitare di metterla) nei controllers (anche se viene spesso più comodo, lo so)
-* `$emit` e `$broadcast` vanno capiti bene. Uno va in su, uno in giC9. Ma su e giC9 di cosa? E qui si apre un _vaso di Pandora_: l'ereditariet`  prototipale degli `$scope` vs lo `$scope.$parent` (no, non sono necessariamente la stessa cosa).
+* `$emit` e `$broadcast` vanno capiti bene. Uno va in su, uno in giù. Ma su e giù di cosa? E qui si apre un _vaso di Pandora_: l'ereditariet`  prototipale degli `$scope` vs lo `$scope.$parent` (no, non sono necessariamente la stessa cosa).
 * Il caso precedente è simile al `onModelChanged` che abbiamo messo in piedi in LPPM. LC, ho spinto per farlo a mano. Forse ho esagerato... ma non so.
 
 ## 3. Cos'è `$rootScope`
@@ -49,11 +49,11 @@ Perr di `$rootScope` si possono usare i `$watch*` e, perchè no, il `$broadcast`,
 [^martello]: Questa è una di quelle cose per cui davvero userei il martello.
 
 ## 4. Controllers e `$scope`
-Anche se Javascript non è _tecnicamente_ un linguaggio orientato agli oggetti, mi piace pensare di poter miscelare concetti di OOP per quel che riguarda l'architettura e concetti di funzionale per la parte piy algoritmica. Alla fine AngularJS è un framework e come tale punta sull'architettura, con delle cose più zuccherose qui e lì.  
-Non solo, Angular2 e ECMA6 hanno il concetto di classi. Sone sempre classi ad ereditariet` prototipale, quindi un concetto diverso da quello a cui siamo abituati con altri linguaggi OO, come Java o C#.
-Questi sono comunque i motivi per cui mi piace l'idea di avere dei controller senza `$scope` iniettato, ma che usino la sintassi `this` e `controllerAs`. Non so se è piy chiara, forse no, forse è anche più complessa, ma mi evita una cosa: confondere lo `$scope` con un posto in cui versare mille variabili e funzioni. Vorrei continuare a vederlo solo come il modo di comunicare con il framework.
+Anche se Javascript non è _tecnicamente_ un linguaggio orientato agli oggetti, mi piace pensare di poter miscelare concetti di OOP per quel che riguarda l'architettura e concetti di funzionale per la parte più algoritmica. Alla fine AngularJS è un framework e come tale punta sull'architettura, con delle cose più zuccherose qui e lì.  
+Non solo, Angular2 e ECMA6 hanno il concetto di classi. Sone sempre classi ad ereditarietà prototipale, quindi un concetto diverso da quello a cui siamo abituati con altri linguaggi OO, come Java o C#.
+Questi sono comunque i motivi per cui mi piace l'idea di avere dei controller senza `$scope` iniettato, ma che usino la sintassi `this` e `controllerAs`. Non so se è più chiara, forse no, forse è anche più complessa, ma mi evita una cosa: confondere lo `$scope` con un posto in cui versare mille variabili e funzioni. Vorrei continuare a vederlo solo come il modo di comunicare con il framework.
 
-Non solo, il controller è in sostanza solo una API con la UI (HTML) e deve fornire ad essa i dati e il modo per interagire con questi dati da parte dell'utente. Per il resto ci sono i servizi e, ancor piy importante, le directives.
+Non solo, il controller è in sostanza solo una API con la UI (HTML) e deve fornire ad essa i dati e il modo per interagire con questi dati da parte dell'utente. Per il resto ci sono i servizi e, ancor più importante, le directives.
 
 ## 5. Directives
 Secondo me le directives sono la prima cosa da capire di AngularJS. Non con gli esempietti stupidi, proprio i concetti dietro a:
@@ -62,14 +62,14 @@ Secondo me le directives sono la prima cosa da capire di AngularJS. Non con gli 
 * controller
 * pre e post link functions
 
-Questi concetti aprono letteralmenet un mondo e mi hanno portato a vedere i controller come la _parte di logica di una directive_ piy che una cosa a parte e a si stante.
+Questi concetti aprono letteralmenet un mondo e mi hanno portato a vedere i controller come la _parte di logica di una directive_ più che una cosa a parte e a si stante.
 
 Quando si crea un controller all'inizio lo si appiccica su una elemento del DOM con `ng-controller="myCtrl"`. Tutto bene, ma non si capisce cosa sta succedendo. Si sta trattando quel DOM element di fatto come una mega directive in puro HTML, quindi priva di aggiornamenti, di inizializzazione ed eventualmente... con quale... `$scope`?
 
-Le uniche interazioni dinamiche sono attraverso l'uso di directive bult-in come le classiche `ng-model` e `ng-repeat`. Appena si vuole fare qualcosa di piy, e purtroppo la rete è piena di questi esempi veramente di bassa qualit`, è iniettare lo `$scope` nel controller ed usarlo da ll. 
+Le uniche interazioni dinamiche sono attraverso l'uso di directive bult-in come le classiche `ng-model` e `ng-repeat`. Appena si vuole fare qualcosa di più, e purtroppo la rete è piena di questi esempi veramente di bassa qualità, è iniettare lo `$scope` nel controller ed usarlo da ll. 
 > Iniettare lo `$scope` nel controller è solo una scorciatoia
 
-Perchè quello `$scope` è anche di (alcuni) figli e di tutti gli elementi dentro l'elemento padre in cui abbiamo messo il controller. E' solo zucchero invece di una piy complessa:
+Perchè quello `$scope` è anche di (alcuni) figli e di tutti gli elementi dentro l'elemento padre in cui abbiamo messo il controller. E' solo zucchero invece di una più complessa:
 ```javascript
 .directive('myDirective', function(){
     return {
@@ -104,13 +104,13 @@ Vediamo un esempio tratto da una storia vera: la dashboard.
 Attori:
 * **Dataset**: Dataset è il _set completo dei dati_ (che arrivano dal server). E' un `service`
 * **Dataview**: è una view sul dataset, ovvero è il dataset al netto dei filtri. Dataview è l'unico che conosce il Dataset e la sua esistenza. Il resto del mondo conosce solo Dataview. E' un `service` che espone di fatto solo `flush()` che prende il dataset, lo fa filtrare dai filtri e mette a disposizione il risultato.
-* **Sidebar**: il controller a sinistra. Di fatto mostra i filtri, scatena l'edit (che è responsabilit` dei filtri stessi) e chiede al Dataview di far `flush()`
+* **Sidebar**: il controller a sinistra. Di fatto mostra i filtri, scatena l'edit (che è responsabilità dei filtri stessi) e chiede al Dataview di far `flush()`
 Quando cambio un filtro nella sidebar, la sidebar(controller) dice al Dataview (servizio) di fare `flush()`
 * **Main** il controller di destra. Chiede ai filtri di dar la descrizione dei filtri attivi (i tag in alto), si occupa di mostrare le diverse _view_ (i report). Prende dal Dataview i dati quando disponibili e li _inoltra_ alle view sotto. Non fa praticmente nulla.
 
-Il problema h come far comunicare `sidebar` e `main`. La soluzione piy semplice è: renderli un solo controller. Non vi è nulla di male a farlo cosl tranne che ha molte dipendenze iniettate, che anche a livello di DOM è molto "ingombrante" e che fa cose molto diverse dal setup dei filtri, alla gestione dei repot. Perr nessun problema sulla comunicazione. Perchè non l'ho fatto cosl?
+Il problema h come far comunicare `sidebar` e `main`. La soluzione più semplice è: renderli un solo controller. Non vi è nulla di male a farlo cosl tranne che ha molte dipendenze iniettate, che anche a livello di DOM è molto "ingombrante" e che fa cose molto diverse dal setup dei filtri, alla gestione dei repot. Perr nessun problema sulla comunicazione. Perchè non l'ho fatto cosl?
 
-Perchè guardando la pagina quelle due parti, sinistra e centro, sono due directive. O se volete due view dello stesso `$state`, come il menu, i dettagli e il QPL di LPPM. C'è anche una questione di ordine, non voglio controller giganti e di curiosit`: come farli parlare diventa una sfida.  
+Perchè guardando la pagina quelle due parti, sinistra e centro, sono due directive. O se volete due view dello stesso `$state`, come il menu, i dettagli e il QPL di LPPM. C'è anche una questione di ordine, non voglio controller giganti e di curiosità: come farli parlare diventa una sfida.  
 Quindi l'ho impostato cosl, non ho fatto le views dello `$state` nè due directive, ma stanno in un solo HTML con due controller dichiarati nell'HTML stesso. Passare alle directives o alla route e le view è banale da questo punto di partenza.
 
 Ok, come segnalare che i filtri sono cambiati?  
@@ -137,12 +137,12 @@ Soluzione 1: eventi puri
 l' `$emit` va su su fino al `$rootScope`, viene pescato dal Dataview, che  fa quel che deve e rilancia un altro evento. Sembra tutto bello e separato anche perchè la Sidebar è agnostica sul fatto che ci sia una Dataview o chissà chi altro in ascolto. Però:
 * se in ascolto dell'`$emit` è un fratello, non lo sente
 * con un evento è facile, anche se vi potrebbe servire fare debug e capire chi becca sto evento. Se ne mettete due o tre, poi ci sono eventi che si chiamo in sequenza, vi assicuro, in un attimo perdete il controllo di chi chiama cosa e in che ordine.
-* Il pub/sub è sincrono. Quindi hai voglia a mettere piy operazione in sequenza.
+* Il pub/sub è sincrono. Quindi hai voglia a mettere più operazione in sequenza.
 * Ma quindi se voglio rinfrescare i dati del Dataview devo tirare un evento che si chiama `filters.changed`? Allora forse sto evento lo deve tirare il Filter Engine stesso. Oppure si deve chiamare `dataview.update.request` ma a quel punto io so che serve al dataview. Boh.
 * Ho iniettato lo scope nei controller.
 * Mi sta meglio il `$broadcast` del servizio perchè lui mette a disposizione un array e sta segnalando ad altri che è cambiato. E' meglio di un `$watch` sull'array da parte dei figli perchè costa di meno e mi evita ancora di avere lo `$scope`.
 
-Ho preferito una cosa piy standard:
+Ho preferito una cosa più standard:
 ```javascript
 .service('Dataview', function($rootScope){
     //...
@@ -153,7 +153,7 @@ Ho preferito una cosa piy standard:
 })
 .controller('Sidebar', function(Dataview){
     //...
-    Dataview.flush(); // Piy esplicito
+    Dataview.flush(); // più esplicito
 })
 .controller('Main', function($scope){
     //...

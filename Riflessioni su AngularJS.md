@@ -129,11 +129,67 @@ Soluzione 1: eventi puri
 })
 .controller('Main', function($scope){
     //...
-    $rootScope.$on('dataview.updated', function(){
+    $scope.$on('dataview.updated', function(){
         // refresh the local dataview that is shared with the below reports
     });
 })
 ```
+l' `$emit` va su su fino al `$rootScope`, viene pescato dal Dataview, che  fa quel che deve e rilancia un altro evento. Sembra tutto bello e separato anche perché la Sidebar è agnostica sul fatto che ci sia una Dataview o chissà chi altro in ascolto. Però:
+* se in ascolto dell'`$emit` è un fratello, non lo sente
+* con un evento è facile, anche se vi potrebbe servire fare debug e capire chi becca sto evento. Se ne mettete due o tre, poi ci sono eventi che si chiamo in sequenza, vi assicuro, in un attimo perdete il controllo di chi chiama cosa e in che ordine.
+* Il pub/sub è sincrono. Quindi hai voglia a mettere più operazione in sequenza.
+* Ma quindi se voglio rinfrescare i dati del Dataview devo tirare un evento che si chiama `filters.changed`? Allora forse sto evento lo deve tirare il Filter Engine stesso. Oppure si deve chiamare `dataview.update.request` ma a quel punto io so che serve al dataview. Boh.
+* Ho iniettato lo scope nei controller.
+* Mi sta meglio il `$broadcast` del servizio perché lui mette a disposizione un array e sta segnalando ad altri che è cambiato. E' meglio di un `$watch` sull'array da parte dei figli perché costa di meno e mi evita ancora di avere lo `$scope`.
+
+Ho preferito una cosa più standard:
+```javascript
+.service('Dataview', function($rootScope){
+    //...
+    this.flush = function(){
+        // Refresh dataview data
+        $rootScope.$broadcast('dataview.updated');
+    });
+})
+.controller('Sidebar', function(Dataview){
+    //...
+    Dataview.flush(); // Più esplicito
+})
+.controller('Main', function($scope){
+    //...
+    $scope.$on('dataview.updated', function(){
+        // refresh the local dataview that is shared with the below reports
+    });
+})
+```
+Si potrebbe avere anche una directive dedicata ad ascoltare gli eventi provenienti dal dataview (e che quindi sta nel modulo con Dataview)
+```javascript
+.directive('dataviewListener', function(){
+   return {
+        scope: {
+            onDataviewUpdated: '&'
+        }
+        link: function(scope){
+            scope.on('dataview.updated', onDataviewUpdated());
+        }
+   };
+});
+```
+che implica nell'HTML una cosa così:
+```html
+<div ng-controller="mainCtrl as main" 
+     dataview-listener 
+     onDataviewUpdated="main.onDataviewChanged()">
+<!-- other stuff -->
+</div>
+```
+Verboso? Forse, ma:
+* il nome dell'vento non lo sa nessuno, se non i membri di Dataview.Module
+* **reuse**: lo può utilizzare chiungue abbia bisgno di sapere che è cambiata la dataview
+* ho separato l'ascolto dell'evento (del modulo Dataview) dall'azione (la decide il controller in cui voglio agire)
+* Nessuno `$scope` nel posto sbagliato....
+
+
 
 ---
 **Thanks to [Dillinger.io] [dill] for providing the sotware to easily write this document**

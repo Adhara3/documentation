@@ -186,9 +186,20 @@ che implica nell'HTML una cosa così:
 Verboso? Forse, ma:
 * il nome dell'vento non lo sa nessuno, se non i membri di Dataview.Module
 * **reuse**: lo può utilizzare chiungue abbia bisgno di sapere che è cambiata la dataview
-* ho separato l'ascolto dell'evento (del modulo Dataview) dall'azione (la decide il controller in cui voglio agire)
+* ho disaccoppiato l'ascolto dell'evento (del modulo Dataview) dall'azione (la decide il controller in cui voglio agire)
 * Nessuno `$scope` nel posto sbagliato....
 
+## 7. Save configuration
+Lo stesso identico problema si trova se voglio salvare le configurazioni.  
+La sidebar ha il bottone: faccio save. Cosa salvo:
+* Lo stato dei filtri
+* Lo stato dei report (quali, in che posizione e con quali settaggi)
+
+Quindi:
+* Ogni filtro deve sapersi serializzare
+* Ogni report deve sapersi serializzare
+* La sidebar genera il tutto
+* Il main deve saperlo, perché deve avvisare le view figlie. Oppure le view figlie devono essere avvisate e il main manco lo sa...
 
 
 ---

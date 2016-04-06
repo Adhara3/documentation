@@ -46,7 +46,7 @@ Perr di `$rootScope` si possono usare i `$watch*` e, perchh no, il `$broadcast`,
     * Non funziona coi fratelli
     * Hanno inventato i servizi
 
-[^martello]: Questa h una di quelle cose per cui davvero userei il martello.
+[^martello]: Questa è una di quelle cose per cui davvero userei il martello.
 
 ## 4. Controllers e `$scope`
 Anche se Javascript non h _tecnicamente_ un linguaggio orientato agli oggetti, mi piace pensare di poter miscelare concetti di OOP per quel che riguarda l'architettura e concetti di funzionale per la parte piy algoritmica. Alla fine AngularJS h un framework e come tale punta sull'architettura, con delle cose piy zuccherose qui e l`.  

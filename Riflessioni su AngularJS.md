@@ -9,20 +9,20 @@ Navigando nel codice della LPPM dashboard avrete notato che in un paio di punti 
     $rootScope.$broadcast('dataview.updated');
 });
 ```
-e alcuni di voi diranno: ma come? Non era una cosa da non fare _mai_? Io vi cito Fabrizio de Andri:
+e alcuni di voi diranno: ma come? Non era una cosa da non fare _mai_? Io vi cito Fabrizio de André:
 > non spalancare le labbra ad un ingorgo di parole  
 > le tue labbra cosl, frenate nelle fantasie dell'amore  
 > dopo l'amore cosl, sicure a rifugiarsi nei "sempre",  
 > nell'ipocrisia dei "mai" 
 
-Mi sono senza dubbio opposto a questa abitudine, frenandola in modo molto deciso. Il motivo h che, per esperienza, gli eventi, ad occhio inesperto, sembrano _comodi_ e _veloci_ ma troppo spesso li ho visti degenerare diventando uno **strumento automatico di generazione di bordello**.
+Mi sono senza dubbio opposto a questa abitudine, frenandola in modo molto deciso. Il motivo è che, per esperienza, gli eventi, ad occhio inesperto, sembrano _comodi_ e _veloci_ ma troppo spesso li ho visti degenerare diventando uno **strumento automatico di generazione di bordello**.
 
-Questo non significa che il modello publisher/subscriber sia _sbagliato_ di per sh, nh ho nulla contro questo, volevo solo che venisse usato, come ogni strumento, nel modo giusto.
+Questo non significa che il modello publisher/subscriber sia _sbagliato_ di per sè, nè ho nulla contro questo, volevo solo che venisse usato, come ogni strumento, nel modo giusto.
 > A volte ho avvitato viti con la punta di un coltello, perchh non avevo un cacciavite  
 > Questo non significa che il coltello sia un cacciavite.  
-> Nh che, in presenza di un cacciavite, userei un coltello.  
-> Nh che taglierei la bistecca con un cacciavite.  
-> Nh che io abbia nulla contro i coltelli o i cacciaviti.
+> Nè che, in presenza di un cacciavite, userei un coltello.  
+> Nè che taglierei la bistecca con un cacciavite.  
+> Nè che io abbia nulla contro i coltelli o i cacciaviti.
 
 ## 2. Angular best practices
 A parte il mio essere [manicheo] [manicheismo], c'h anche una questione di _best practices_.  
@@ -35,7 +35,7 @@ A parte il mio essere [manicheo] [manicheismo], c'h anche una questione di _best
 * Il caso precedente h simile al `onModelChanged` che abbiamo messo in piedi in LPPM. LC, ho spinto per farlo a mano. Forse ho esagerato... ma non so.
 
 ## 3. Cos'è `$rootScope`
-Quando una app viene su, viene creato un `$rootScope`. Questo h lo scope padre di tutti gli scope. Vive per sempre, dall'inizio alla fine della vita dell'applicazione. Su Stack Overflow h pieno di gente che ha preso questo concetto e ha detto: bene, allora io butto roba nel `$rootScope` e di fatto ce l'ho ovunque. Tradotto: creo dei globali. Che sono un male assoluto (e questo lo dico senza mezze misure e senza timore di essere smentito[^martello]).
+Quando una app viene su, viene creato un `$rootScope`. Questo è lo scope padre di tutti gli scope. Vive per sempre, dall'inizio alla fine della vita dell'applicazione. Su Stack Overflow h pieno di gente che ha preso questo concetto e ha detto: bene, allora io butto roba nel `$rootScope` e di fatto ce l'ho ovunque. Tradotto: creo dei globali. Che sono un male assoluto (e questo lo dico senza mezze misure e senza timore di essere smentito[^martello]).
 >`$rootScope` **non** h uno storage globale.
 
 Perr di `$rootScope` si possono usare i `$watch*` e, perchh no, il `$broadcast`, che sono di fatto delle utility. Con parsimonia perr. E tenendo conto che:

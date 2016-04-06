@@ -34,7 +34,7 @@ A parte il mio essere [manicheo] [manicheismo], c'h anche una questione di _best
 * `$emit` e `$broadcast` vanno capiti bene. Uno va in su, uno in giC9. Ma su e giC9 di cosa? E qui si apre un _vaso di Pandora_: l'ereditariet`  prototipale degli `$scope` vs lo `$scope.$parent` (no, non sono necessariamente la stessa cosa).
 * Il caso precedente h simile al `onModelChanged` che abbiamo messo in piedi in LPPM. LC, ho spinto per farlo a mano. Forse ho esagerato... ma non so.
 
-## 3. Cos'h `$rootScope`
+## 3. Cos'è `$rootScope`
 Quando una app viene su, viene creato un `$rootScope`. Questo h lo scope padre di tutti gli scope. Vive per sempre, dall'inizio alla fine della vita dell'applicazione. Su Stack Overflow h pieno di gente che ha preso questo concetto e ha detto: bene, allora io butto roba nel `$rootScope` e di fatto ce l'ho ovunque. Tradotto: creo dei globali. Che sono un male assoluto (e questo lo dico senza mezze misure e senza timore di essere smentito[^martello]).
 >`$rootScope` **non** h uno storage globale.
 
@@ -46,7 +46,7 @@ Perr di `$rootScope` si possono usare i `$watch*` e, perchh no, il `$broadcast`,
     * Non funziona coi fratelli
     * Hanno inventato i servizi
 
-[^martello]: Questa è una di quelle cose per cui davvero userei il martello.
+[^martello]: Questa h una di quelle cose per cui davvero userei il martello.
 
 ## 4. Controllers e `$scope`
 Anche se Javascript non h _tecnicamente_ un linguaggio orientato agli oggetti, mi piace pensare di poter miscelare concetti di OOP per quel che riguarda l'architettura e concetti di funzionale per la parte piy algoritmica. Alla fine AngularJS h un framework e come tale punta sull'architettura, con delle cose piy zuccherose qui e l`.  
@@ -96,22 +96,22 @@ E non h solo questo:
 * due indizi fanno... quasi una prova.
 
 ## 6. Ma quindi... sti eventi?
-Premesso tutto questo, gli eventi che girano negli `$scope` sono una _feature_ utilizzabile, visto soprattutto un grandissimo vantaggio: le sottoscrizioni _muoiono con lo `$scope` stesso_. Quindi non serve deregistrarsi. Ripeto però che secondo me servono due requisiti:
+Premesso tutto questo, gli eventi che girano negli `$scope` sono una _feature_ utilizzabile, visto soprattutto un grandissimo vantaggio: le sottoscrizioni _muoiono con lo `$scope` stesso_. Quindi non serve deregistrarsi. Ripeto perr che secondo me servono due requisiti:
 * Si usa solo il `$broadcast`, ovvero vengono solo tirati dall'alto
 * Non se ne abusa, meglio una chiamata esplicita ed un API chiara.
 
 Vediamo un esempio tratto da una storia vera: la dashboard.
 Attori:
-* **Dataset**: Dataset è il _set completo dei dati_ (che arrivano dal server). E' un `service`
-* **Dataview**: è una view sul dataset, ovvero è il dataset al netto dei filtri. Dataview è l'unico che conosce il Dataset e la sua esistenza. Il resto del mondo conosce solo Dataview. E' un `service` che espone di fatto solo `flush()` che prende il dataset, lo fa filtrare dai filtri e mette a disposizione il risultato.
-* **Sidebar**: il controller a sinistra. Di fatto mostra i filtri, scatena l'edit (che è responsabilità dei filtri stessi) e chiede al Dataview di far `flush()`
+* **Dataset**: Dataset h il _set completo dei dati_ (che arrivano dal server). E' un `service`
+* **Dataview**: h una view sul dataset, ovvero h il dataset al netto dei filtri. Dataview h l'unico che conosce il Dataset e la sua esistenza. Il resto del mondo conosce solo Dataview. E' un `service` che espone di fatto solo `flush()` che prende il dataset, lo fa filtrare dai filtri e mette a disposizione il risultato.
+* **Sidebar**: il controller a sinistra. Di fatto mostra i filtri, scatena l'edit (che h responsabilit` dei filtri stessi) e chiede al Dataview di far `flush()`
 Quando cambio un filtro nella sidebar, la sidebar(controller) dice al Dataview (servizio) di fare `flush()`
 * **Main** il controller di destra. Chiede ai filtri di dar la descrizione dei filtri attivi (i tag in alto), si occupa di mostrare le diverse _view_ (i report). Prende dal Dataview i dati quando disponibili e li _inoltra_ alle view sotto. Non fa praticmente nulla.
 
-Il problema è come far comunicare `sidebar` e `main`. La soluzione più semplice è: renderli un solo controller. Non vi è nulla di male a farlo così tranne che ha molte dipendenze iniettate, che anche a livello di DOM è molto "ingombrante" e che fa cose molto diverse dal setup dei filtri, alla gestione dei repot. Però nessun problema sulla comunicazione. Perché non l'ho fatto così?
+Il problema h come far comunicare `sidebar` e `main`. La soluzione piy semplice h: renderli un solo controller. Non vi h nulla di male a farlo cosl tranne che ha molte dipendenze iniettate, che anche a livello di DOM h molto "ingombrante" e che fa cose molto diverse dal setup dei filtri, alla gestione dei repot. Perr nessun problema sulla comunicazione. Perchi non l'ho fatto cosl?
 
-Perché guardando la pagina quelle due parti, sinistra e centro, sono due directive. O se volete due view dello stesso `$state`, come il menu, i dettagli e il QPL di LPPM. C'è anche una questione di ordine, non voglio controller giganti e di curiosità: come farli parlare diventa una sfida.  
-Quindi l'ho impostato così, non ho fatto le views dello `$state` nè due directive, ma stanno in un solo HTML con due controller dichiarati nell'HTML stesso. Passare alle directives o alla route e le view è banale da questo punto di partenza.
+Perchi guardando la pagina quelle due parti, sinistra e centro, sono due directive. O se volete due view dello stesso `$state`, come il menu, i dettagli e il QPL di LPPM. C'h anche una questione di ordine, non voglio controller giganti e di curiosit`: come farli parlare diventa una sfida.  
+Quindi l'ho impostato cosl, non ho fatto le views dello `$state` nh due directive, ma stanno in un solo HTML con due controller dichiarati nell'HTML stesso. Passare alle directives o alla route e le view h banale da questo punto di partenza.
 
 Ok, come segnalare che i filtri sono cambiati?  
 Soluzione 1: eventi puri
@@ -134,15 +134,15 @@ Soluzione 1: eventi puri
     });
 })
 ```
-l' `$emit` va su su fino al `$rootScope`, viene pescato dal Dataview, che  fa quel che deve e rilancia un altro evento. Sembra tutto bello e separato anche perché la Sidebar è agnostica sul fatto che ci sia una Dataview o chissà chi altro in ascolto. Però:
-* se in ascolto dell'`$emit` è un fratello, non lo sente
-* con un evento è facile, anche se vi potrebbe servire fare debug e capire chi becca sto evento. Se ne mettete due o tre, poi ci sono eventi che si chiamo in sequenza, vi assicuro, in un attimo perdete il controllo di chi chiama cosa e in che ordine.
-* Il pub/sub è sincrono. Quindi hai voglia a mettere più operazione in sequenza.
+l' `$emit` va su su fino al `$rootScope`, viene pescato dal Dataview, che  fa quel che deve e rilancia un altro evento. Sembra tutto bello e separato anche perchi la Sidebar h agnostica sul fatto che ci sia una Dataview o chiss` chi altro in ascolto. Perr:
+* se in ascolto dell'`$emit` h un fratello, non lo sente
+* con un evento h facile, anche se vi potrebbe servire fare debug e capire chi becca sto evento. Se ne mettete due o tre, poi ci sono eventi che si chiamo in sequenza, vi assicuro, in un attimo perdete il controllo di chi chiama cosa e in che ordine.
+* Il pub/sub h sincrono. Quindi hai voglia a mettere piy operazione in sequenza.
 * Ma quindi se voglio rinfrescare i dati del Dataview devo tirare un evento che si chiama `filters.changed`? Allora forse sto evento lo deve tirare il Filter Engine stesso. Oppure si deve chiamare `dataview.update.request` ma a quel punto io so che serve al dataview. Boh.
 * Ho iniettato lo scope nei controller.
-* Mi sta meglio il `$broadcast` del servizio perché lui mette a disposizione un array e sta segnalando ad altri che è cambiato. E' meglio di un `$watch` sull'array da parte dei figli perché costa di meno e mi evita ancora di avere lo `$scope`.
+* Mi sta meglio il `$broadcast` del servizio perchi lui mette a disposizione un array e sta segnalando ad altri che h cambiato. E' meglio di un `$watch` sull'array da parte dei figli perchi costa di meno e mi evita ancora di avere lo `$scope`.
 
-Ho preferito una cosa più standard:
+Ho preferito una cosa piy standard:
 ```javascript
 .service('Dataview', function($rootScope){
     //...
@@ -153,7 +153,7 @@ Ho preferito una cosa più standard:
 })
 .controller('Sidebar', function(Dataview){
     //...
-    Dataview.flush(); // Più esplicito
+    Dataview.flush(); // Piy esplicito
 })
 .controller('Main', function($scope){
     //...
@@ -175,7 +175,7 @@ Si potrebbe avere anche una directive dedicata ad ascoltare gli eventi provenien
    };
 });
 ```
-che implica nell'HTML una cosa così:
+che implica nell'HTML una cosa cosl:
 ```html
 <div ng-controller="mainCtrl as main" 
      dataview-listener 
@@ -185,12 +185,12 @@ che implica nell'HTML una cosa così:
 ```
 Verboso? Forse, ma:
 * il nome dell'vento non lo sa nessuno, se non i membri di Dataview.Module
-* **reuse**: lo può utilizzare chiungue abbia bisgno di sapere che è cambiata la dataview
+* **reuse**: lo pur utilizzare chiungue abbia bisgno di sapere che h cambiata la dataview
 * ho disaccoppiato l'ascolto dell'evento (del modulo Dataview) dall'azione (la decide il controller in cui voglio agire)
 * Nessuno `$scope` nel posto sbagliato....
 
 ## 7. Save configuration
-Lo stesso identico problema, anche più grande in realtà, si trova se voglio salvare le configurazioni.  
+Lo stesso identico problema, anche piy grande in realt`, si trova se voglio salvare le configurazioni.  
 La sidebar ha il bottone: faccio save. Cosa salvo:
 * Lo stato dei filtri
 * Lo stato dei report (quali, in che posizione e con quali settaggi)
@@ -199,8 +199,8 @@ Quindi:
 * Ogni filtro deve sapersi serializzare
 * Ogni report deve sapersi serializzare
 * La sidebar genera il tutto
-* Il main deve saperlo, perché deve avvisare le view figlie.
-* Oppure le view figlie devono essere avvisate e il main manco lo sa... eventi? Può essere un buon uso qui, oppure directive ad hoc come prima
+* Il main deve saperlo, perchi deve avvisare le view figlie.
+* Oppure le view figlie devono essere avvisate e il main manco lo sa... eventi? Pur essere un buon uso qui, oppure directive ad hoc come prima
 
 
 ---

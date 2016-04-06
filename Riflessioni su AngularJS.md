@@ -190,7 +190,7 @@ Verboso? Forse, ma:
 * Nessuno `$scope` nel posto sbagliato....
 
 ## 7. Save configuration
-Lo stesso identico problema si trova se voglio salvare le configurazioni.  
+Lo stesso identico problema, anche più grande in realtà, si trova se voglio salvare le configurazioni.  
 La sidebar ha il bottone: faccio save. Cosa salvo:
 * Lo stato dei filtri
 * Lo stato dei report (quali, in che posizione e con quali settaggi)
@@ -199,7 +199,8 @@ Quindi:
 * Ogni filtro deve sapersi serializzare
 * Ogni report deve sapersi serializzare
 * La sidebar genera il tutto
-* Il main deve saperlo, perché deve avvisare le view figlie. Oppure le view figlie devono essere avvisate e il main manco lo sa...
+* Il main deve saperlo, perché deve avvisare le view figlie.
+* Oppure le view figlie devono essere avvisate e il main manco lo sa... eventi? Può essere un buon uso qui, oppure directive ad hoc come prima
 
 
 ---
